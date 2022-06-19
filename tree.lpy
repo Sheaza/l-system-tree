@@ -36,14 +36,14 @@ C(x,k) :
 
 k(s):
   rnd = random.random()
-  if (rnd < 0.60):
+  if (rnd < 0.75):
     produce k(s+leaf_step)
   else:
     produce k(s)
 T(t):
   if (t < maximum_trunk_height):
     rd = random.random()
-    if rd < 0.1:
+    if rd < 0.15:
       produce SetColor(0) /(1)+(0.1)F(0.1) T(t+0.042)
     else:
       produce SetColor(0) F(0.1) T(t+0.042)
