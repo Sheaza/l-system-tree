@@ -7,6 +7,16 @@ step = 0.1
 leaf_step = 1
 maximum_trunk_height = 3.5
 
+strings = []
+
+def EndEach(current_string):
+  strings.append(str(current_string))
+  
+def End():
+  with open('data.txt', 'w+') as file_handler:
+    for string in strings:
+        print(string, file=file_handler)
+
 Axiom: _(0.5)T(0)A(1.0)
 # _ turtle width
 
