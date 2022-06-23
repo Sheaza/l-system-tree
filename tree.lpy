@@ -34,7 +34,7 @@ production:
 # branches production rules
 A(k) :
   
-    p1 = min(1,(2*k+5)/k**2)
+    p1 = min(1,(2*k+8)/k**2)
     # probability for producing branch with a leaf
     
     r = random.random()
