@@ -1,54 +1,78 @@
 import random
 
 phi = 52
+# rotation of branches
+
 alpha = 28
 beta  = 20
+# both for angle of branches
+
 step = 0.1
+
 leaf_step = 1
 maximum_trunk_height = 3.5
 
+strings = []
+
+def EndEach(current_string):
+  strings.append(str(current_string))
+  
+def End():
+  with open('data.txt', 'w+') as file_handler:
+    for string in strings:
+        print(string, file=file_handler)
+
 Axiom: _(0.5)T(0)A(1.0)
+# starting state - initialization of T - Trunk and A which initialize branches production process
 # _ turtle width
 
 derivation length: 850
+# simulation duration
+
 production:
 
+# branches production rules
 A(k) :
   
-    p1 = min(1,(2*k+8)/k**2)
+    p1 = min(1,(2*k+5)/k**2)
+    # probability for producing branch with a leaf
+    
     r = random.random()
     if r <= p1:
         produce /(phi)[+(alpha)C(0.1,k)]-(beta)C(step,k)
     else:
         produce /(phi)[+(alpha)/k(step)]-(beta)C(0.1,k)
 
+# branches module
 C(x,k) :
     if x >= 1:
       if k < 30:
         if k < 15:
-            produce F(1,0.05+0.25/k)A(k+1)
+            produce F(1,0.05+0.25/k)A(k+1) # new branches
         else:
-            produce F(1,0.05+0.25/k)
+            produce F(1,0.05+0.25/k) # branch is getting narrower
       else:
-        produce C(x,k)
+        produce C(x,k) # stop growing
     else:
         produce C(x+step,k)
 
+# leaves module
 k(s):
   rnd = random.random()
   if (rnd < 0.75):
-    produce k(s+leaf_step)
+    produce k(s+leaf_step) # there is 0.25 chance that leaf won't mature to make some noise in growing
   else:
     produce k(s)
+# trunk module    
 T(t):
   if (t < maximum_trunk_height):
     rd = random.random()
     if rd < 0.65:
-      produce SetColor(0) +(0.5)F(0.1) T(t+0.042)
+      produce SetColor(0) +(0.5)F(0.1) T(t+0.042) # 0.65 chance that trunk will be curved 0.5 degree in positive direction 
     else:
-      produce SetColor(0) -(0.5)F(0.1) T(t+0.042)
+      produce SetColor(0) -(0.5)F(0.1) T(t+0.042) # 0.35 in negative direction
   else:
-    produce T(t)
+    produce T(t) @ stop growing when achievied maximum length
 
 homomorphism:
 
@@ -62,9 +86,10 @@ C(x,k):
     if k < 30:
       produce F(x, d)
 
+# here leaves change color and size in time
 k(s):
   if 0 <= s < 114:
-    produce ;(1)_(0.007)F(0.4)~l((s*1.0)/114)
+    produce ;(1)_(0.007)F(0.4)~l((s*1.0)/114) # slow grow
   elif 114 <= s <= 118:
     produce ;(2)_(0.007)F(0.4)~l(1)
   elif 118 <= s <= 124:
@@ -90,7 +115,7 @@ k(s):
   elif 290 <= s <= 320:
     produce ;(13)_(0.007)F(0.4)~l(1)
   elif 320 < s <= 350:
-    produce ;(14)_(0.007)F(0.2)~l(0.8)
+    produce ;(14)_(0.007)F(0.2)~l(0.8) # here they're getting smaller to simulate drying
   elif 350 < s <= 380:
     produce ;(15)_(0.007)F(0.2)~l(0.8)
   elif 380 < s <= 420:
@@ -98,7 +123,7 @@ k(s):
   elif 420 < s <= 450:
     produce ;(16)_(0.007)F(0.2)~l(0.8)
   else:
-    produce
+    produce # finally they "fall off" 
 ###### INITIALISATION ######
 
 __lpy_code_version__ = 1.1

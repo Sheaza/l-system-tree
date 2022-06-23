@@ -15,7 +15,7 @@ production:
 
 A(k) :
   
-    p1 = min(1,(2*k+8)/k**2)
+    p1 = min(1,(2*k+5)/k**2)
     r = random.random()
     if r <= p1:
         produce /(phi)[+(alpha)C(0.1,k)]-(beta)C(step,k)
